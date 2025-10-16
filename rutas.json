@@ -3733,7 +3733,7 @@
       }
     },
     {
-      "method": "PUT",
+      "method": "PATCH",
       "path": "/api/configuration",
       "title": "Actualizar configuración",
       "description": "Permite actualizar la configuración del sistema.",
