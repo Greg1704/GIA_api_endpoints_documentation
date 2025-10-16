@@ -1,0 +1,4047 @@
+{
+  "folders": [
+    {
+      "name": "Auth",
+      "id": "auth"
+    },
+    {
+      "name": "Me",
+      "id": "me"
+    },
+    {
+      "name": "Users",
+      "id": "users"
+    },
+    {
+      "name": "Roles",
+      "id": "roles"
+    },
+    {
+      "name": "Professors",
+      "id": "professors"
+    },
+    {
+      "name": "Subjects",
+      "id": "subjects"
+    },
+    {
+      "name": "Departments",
+      "id": "departments"
+    },
+    {
+      "name": "Academic Secretaries",
+      "id": "academic_secretaries"
+    },
+    {
+      "name": "Observers",
+      "id": "observers"
+    },
+    {
+      "name": "Department Directors",
+      "id": "department_directors"
+    },
+    {
+      "name": "Instruments",
+      "id": "instruments"
+    },
+    {
+      "name": "Conversations",
+      "id": "conversations"
+    },
+    {
+      "name": "Configuration",
+      "id": "configuration"
+    },
+    {
+      "name": "Notifications",
+      "id": "notifications"
+    },
+    {
+      "name": "Statistics",
+      "id": "statistics"
+    },
+    {
+      "name": "WebSocket",
+      "id": "websocket"
+    }
+  ],
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/login",
+      "title": "Login de usuario",
+      "description": "Logueo del usuario en el sistema, devolviendote la información básica del usuario.",
+      "folder": "auth",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "email",
+          "type": "string",
+          "required": true,
+          "description": "Correo electrónico del usuario"
+        },
+        {
+          "field": "password",
+          "type": "string",
+          "required": true,
+          "description": "Contraseña del usuario"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Login exitoso"
+        },
+        {
+          "code": "401",
+          "description": "Contraseña o mail son incorrectas"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "dni": "12345678",
+        "surname": "Pérez",
+        "name": "Juan",
+        "email": "juan.perez@example.com",
+        "phone": "+54 9 11 1234-5678",
+        "roles": [
+          "DOCENTE",
+          "ADMINISTRADOR"
+        ],
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/register",
+      "title": "Registrar nuevo usuario",
+      "description": "Creación del usuario, la cual resulta en el envío de un mail al mismo con una contraseña temporal la cual sera cambiada en su primer acceso al sistema.",
+      "folder": "auth",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "email",
+          "type": "string",
+          "required": true,
+          "description": "Correo electrónico del usuario"
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre del usuario"
+        },
+        {
+          "field": "surname",
+          "type": "string",
+          "required": false,
+          "description": "Apellido del usuario"
+        },
+        {
+          "field": "cellphone",
+          "type": "string",
+          "required": false,
+          "description": "Número de teléfono celular"
+        },
+        {
+          "field": "dni",
+          "type": "string",
+          "required": false,
+          "description": "Documento Nacional de Identidad"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Usuario creado exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Mail no especificado"
+        },
+        {
+          "code": "409",
+          "description": "Mail encontrado en la base de datos"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {}
+    },
+    {
+      "method": "POST",
+      "path": "/api/reset-password",
+      "title": "Cambio de contraseña",
+      "description": "Se cambia la contraseña por una nueva desde el sistema.",
+      "folder": "auth",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "old_password",
+          "type": "string",
+          "required": true,
+          "description": "Contraseña original"
+        },
+        {
+          "field": "new_password",
+          "type": "string",
+          "required": true,
+          "description": "Contraseña nueva"
+        },
+        {
+          "field": "repeated_password",
+          "type": "string",
+          "required": true,
+          "description": "Contraseña nueva repetida para verificación"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Contraseña cambiada correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Ausencia de campos, o error en coincidencia de contraseña vieja o la nueva"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "404",
+          "description": "Usuario no existe"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {}
+    },
+    {
+      "method": "GET",
+      "path": "/api/forgot-password",
+      "title": "Recuperar contraseña",
+      "description": "Envía un correo electrónico con instrucciones para restablecer la contraseña",
+      "folder": "auth",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "email",
+          "type": "string",
+          "required": true,
+          "description": "Correo electrónico del usuario"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Correo de recuperación enviado"
+        },
+        {
+          "code": "400",
+          "description": "No se específico el mail"
+        },
+        {
+          "code": "500",
+          "description": "Error al enviar el correo"
+        }
+      ],
+      "responseSample": {
+        "message": "Enlace de reseteo de contraseña enviado"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/me",
+      "title": "Obtener información del usuario actual",
+      "description": "Devuelve la información del usuario autenticado actualmente en el sistema",
+      "folder": "me",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Información obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "dni": "12345678",
+        "surname": "Pérez",
+        "name": "Juan",
+        "email": "juan.perez@example.com",
+        "phone": "+54 9 11 1234-5678",
+        "first_access": false,
+        "roles": [
+          "DOCENTE",
+          "OBSERVADOR"
+        ]
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/me",
+      "title": "Actualizar información del usuario actual",
+      "description": "Permite al usuario autenticado actualizar su propia información personal",
+      "folder": "me",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre del usuario"
+        },
+        {
+          "field": "surname",
+          "type": "string",
+          "required": false,
+          "description": "Apellido del usuario"
+        },
+        {
+          "field": "phone",
+          "type": "string",
+          "required": false,
+          "description": "Número de teléfono"
+        },
+        {
+          "field": "dni",
+          "type": "string",
+          "required": false,
+          "description": "Documento Nacional de Identidad"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Información actualizada exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Se envio el campo email o contraseña"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "404",
+          "description": "Usuario no existente"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "dni": "12345678",
+        "surname": "Pérez",
+        "name": "Juan",
+        "email": "juan.perez@example.com",
+        "phone": "+54 9 11 1234-5678",
+        "first_access": false,
+        "roles": [
+          "DOCENTE",
+          "OBSERVADOR"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/users",
+      "title": "Obtener usuarios",
+      "description": "Obtiene una lista de usuarios del sistema con filtros opcionales por rol, departamento, etc. Se espera poder mandar role y notrole, el comportamiento esperado es que tenga todos los roles especificados o que no tenga ninguno de los roles especificados.",
+      "folder": "users",
+      "queryParams": [
+        {
+          "field": "role",
+          "type": "string",
+          "required": false,
+          "description": "Roles separados por coma para filtrar usuarios que tengan TODOS esos roles"
+        },
+        {
+          "field": "notrole",
+          "type": "string",
+          "required": false,
+          "description": "Roles separados por coma para filtrar usuarios que NO tengan ninguno de esos roles"
+        },
+        {
+          "field": "withoutDepartment",
+          "type": "boolean",
+          "required": false,
+          "description": "Solo debe ser true si role es solo para directores sin departamento asignado"
+        }
+      ],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Parámetros inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "dni": "12345678",
+          "surname": "Pérez",
+          "name": "Juan",
+          "email": "juan.perez@example.com",
+          "phone": "+54 9 11 1234-5678",
+          "first_access": true,
+          "roles": [
+            "DOCENTE",
+            "DIRECTOR"
+          ]
+        },
+        {
+          "id": 2,
+          "dni": "87654321",
+          "surname": "González",
+          "name": "María",
+          "email": "maria.gonzalez@example.com",
+          "phone": "+54 9 11 8765-4321",
+          "first_access": false,
+          "roles": [
+            "ADMINISTRADOR"
+          ]
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/user/{id}",
+      "title": "Obtener información de un usuario específico",
+      "description": "Devuelve la información completa de un usuario por su ID",
+      "folder": "users",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Usuario encontrado"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "dni": "12345678",
+        "surname": "Pérez",
+        "name": "Juan",
+        "email": "juan.perez@example.com",
+        "phone": "+54 9 11 1234-5678",
+        "first_access": false,
+        "roles": [
+          "DOCENTE",
+          "OBSERVADOR"
+        ]
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/user/{id}",
+      "title": "Actualizar información de un usuario",
+      "description": "Permite actualizar la información de un usuario específico del sistema",
+      "folder": "users",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre del usuario"
+        },
+        {
+          "field": "surname",
+          "type": "string",
+          "required": false,
+          "description": "Apellido del usuario"
+        },
+        {
+          "field": "phone",
+          "type": "string",
+          "required": false,
+          "description": "Número de teléfono"
+        },
+        {
+          "field": "dni",
+          "type": "string",
+          "required": false,
+          "description": "Documento Nacional de Identidad"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Usuario actualizado exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Se envío el campo email o password en el body"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Usuario actualizado correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/user/{id}",
+      "title": "Eliminar un usuario",
+      "description": "Elimina un usuario del sistema de forma permanente",
+      "folder": "users",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Usuario eliminado exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Usuario eliminado correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/roles/",
+      "title": "Obtener todos los roles disponibles",
+      "description": "Devuelve la lista completa de roles disponibles en el sistema (ADMINISTRADOR, OBSERVADOR, DOCENTE, DIRECTOR, SECRETARIA_ACADEMICA)",
+      "folder": "roles",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista de roles obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado al servidor o base de datos"
+        }
+      ],
+      "responseSample": [
+        "ADMINISTRADOR",
+        "OBSERVADOR",
+        "DOCENTE",
+        "DIRECTOR",
+        "SECRETARIA_ACADEMICA"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/roles/{userId}",
+      "title": "Agregar rol a usuario",
+      "description": "Permite asignar los roles de un usuario específico",
+      "folder": "roles",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "role_name",
+          "type": "string",
+          "required": true,
+          "description": "Nombre del rol que busca agregarse"
+        },
+        {
+          "field": "department_id",
+          "type": "integer",
+          "required": false,
+          "description": "En caso de querer agregar el rol de director, sera necesario el id del departamento"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Rol agregado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario o rol no encontrado"
+        },
+        {
+          "code": "409",
+          "description": "Usuario ya cuenta con el rol"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Roles asignado correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/roles/{userId}",
+      "title": "Remover rol de un usuario",
+      "description": "Remueve un rol asignado a un usuario específico",
+      "folder": "roles",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "role_name",
+          "type": "string",
+          "required": true,
+          "description": "Nombre del rol que busca agregarse"
+        },
+        {
+          "field": "department_id",
+          "type": "integer",
+          "required": false,
+          "description": "En caso de querer remover el rol de director, sera necesario el id del departamento"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Rol eliminado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario o rol no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Rol eliminado correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/professors/",
+      "title": "Listar todos los profesores",
+      "description": "Se obtiene toda la información básica de todos los profesores, sus cargos en sus respectivas materias y los departamentos a los que pertenecen.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de todos los profesores del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de todos los profesores de su departamento.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento del director no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado al servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Juan",
+          "surname": "Pérez",
+          "subjectPosition": [
+            {
+              "id": 1,
+              "name": "Profesor Titular",
+              "subject_id": 1,
+              "subject_name": "Fisica 1",
+              "department_id": 1,
+              "department_name": "Departamento de Fisica",
+              "permissions": 255
+            },
+            {
+              "id": 2,
+              "name": "Jefe de Trabajos Prácticos",
+              "subject_id": 2,
+              "subject_name": "Fisica 2",
+              "department_id": 1,
+              "department_name": "Departamento de Fisica",
+              "permissions": 100
+            }
+          ],
+          "credits": 25,
+          "start_license": "2025-10-10 13:00:00",
+          "end_license": "2025-10-20 13:00:00",
+          "departmentList": [
+            1
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Marcos",
+          "surname": "Gomez",
+          "subjectPosition": [],
+          "credits": 0,
+          "start_license": null,
+          "end_license": null,
+          "departmentList": []
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/professors/{professor_id}",
+      "title": "Obtener información de un profesor",
+      "description": "Se obtiene toda la información básica de un profesor específico, sus cargos en sus respectivas materias y los departamentos a los que pertenece.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de cualquier profesor dentro del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de cualquier profesor dentro de su departamento.\n-En caso de ser un DOCENTE, obtiene solo su propia información.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Profesor encontrado"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "El profesor no se encuentra en el sistema"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Juan",
+        "surname": "Pérez",
+        "subjectPosition": [
+          {
+            "id": 1,
+            "name": "Profesor Titular",
+            "subject_id": 1,
+            "subject_name": "Fisica 1",
+            "department_id": 1,
+            "department_name": "Departamento de Fisica",
+            "permissions": 255
+          },
+          {
+            "id": 2,
+            "name": "Jefe de Trabajos Prácticos",
+            "subject_id": 2,
+            "subject_name": "Fisica 2",
+            "department_id": 1,
+            "department_name": "Departamento de Fisica",
+            "permissions": 100
+          }
+        ],
+        "credits": 25,
+        "start_license": "2025-10-10 13:00:00",
+        "end_license": "2025-10-20 13:00:00",
+        "departmentList": [
+          1
+        ]
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/professors/{professor_id}",
+      "title": "Eliminar un profesor",
+      "description": "Elimina un profesor del sistema.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Profesor eliminado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a permisos"
+        },
+        {
+          "code": "404",
+          "description": "Profesor no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Profesor eliminado correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/professors/licenses/{professor_id}",
+      "title": "Obtener licencias de un profesor",
+      "description": "Devuelve la licencia actual asociada a un profesor específico.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de cualquier profesor dentro del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de cualquier profesor dentro de su departamento.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Licencias obtenidas exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Profesor no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Jorge",
+        "surname": "Perez",
+        "start_license": "2025-10-10 13:00:00",
+        "end_license": "2025-10-10 13:00:00"
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/professors/licenses/{professor_id}",
+      "title": "Actualizar licencia de un profesor",
+      "description": "Permite modificar la información de una licencia existente",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "start_license",
+          "type": "string",
+          "required": true,
+          "description": "Fecha de inicio"
+        },
+        {
+          "field": "end_license",
+          "type": "string",
+          "required": true,
+          "description": "Fecha de fin"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Licencia actualizada exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Profesor no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Licencia actualizada correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/professors/licenses/{professor_id}",
+      "title": "Eliminar licencia de un profesor",
+      "description": "Elimina una licencia específica de un profesor",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Licencia eliminada exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Profesor no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Licencia eliminada correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/professor/positions",
+      "title": "Obtener todas las posiciones de profesores",
+      "description": "Devuelve la lista de todas las posiciones/cargos de profesores en el sistema.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de todos los profesores del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de todos los profesores de su departamento.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Posiciones obtenidas exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento no encontrado, en caso de director"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Juan Perez",
+          "positions": [
+            {
+              "id": 1,
+              "name": "Profesor Titular",
+              "subject_id": 1,
+              "subject_name": "Fisica 1",
+              "department_id": 1,
+              "department_name": "Departamento de Fisica",
+              "permissions": 255
+            },
+            {
+              "id": 2,
+              "name": "Profesor Suplente",
+              "subject_id": 2,
+              "subject_name": "Fisica 2",
+              "department_id": 2,
+              "department_name": "Departamento de Fisica",
+              "permissions": 128
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Fran Perez",
+          "positions": []
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/professor/positions/{professor_id}",
+      "title": "Obtener posiciones de un profesor",
+      "description": "Devuelve todas las posiciones/cargos de un profesor específico.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de cualquier profesor dentro del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de cualquier profesor dentro de su departamento.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Posiciones obtenidas exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Profesor o departamento no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Juan Perez",
+        "positions": [
+          {
+            "id": 1,
+            "name": "Profesor Titular",
+            "subject_id": 1,
+            "subject_name": "Fisica 1",
+            "department_id": 1,
+            "department_name": "Departamento de Fisica",
+            "permissions": 255
+          },
+          {
+            "id": 2,
+            "name": "Profesor Suplente",
+            "subject_id": 2,
+            "subject_name": "Fisica 2",
+            "department_id": 2,
+            "department_name": "Departamento de Fisica",
+            "permissions": 128
+          }
+        ]
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/professor/positions/{professor_id}",
+      "title": "Actualizar posición de un profesor",
+      "description": "Permite modificar la información de una posición/cargo de un profesor.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "subjectId",
+          "type": "integer",
+          "required": true,
+          "description": "Id de la materia"
+        },
+        {
+          "field": "positionId",
+          "type": "integer",
+          "required": true,
+          "description": "Id del cargo asignado al profesor"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Posiciones del profesor actualizadas correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Los creditos del profesor exceden el limite permitido"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Profesor, materia o cargo no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Posiciones del profesor actualizadas correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/professor/positions/{professor_id}",
+      "title": "Eliminar posición de un profesor",
+      "description": "Elimina un cargo específico de un profesor de una materia.",
+      "folder": "professors",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "subjectId",
+          "type": "integer",
+          "required": true,
+          "description": "Id de la materia"
+        },
+        {
+          "field": "positionId",
+          "type": "integer",
+          "required": true,
+          "description": "Id del cargo a remover"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Posición del profesor eliminada correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Profesor, materia o cargo no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Posición del profesor eliminada correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/subjects/",
+      "title": "Listar todas las materias",
+      "description": "Obtiene la lista completa de materias/asignaturas registradas en el sistema.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de todas las materias dentro del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de todas las materias dentro de su departamento.\n-En caso de ser un DOCENTE, obtiene solo la información de las materias a las que pertenece.",
+      "folder": "subjects",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Álgebra I",
+          "code": "MAT101",
+          "mandatory": true,
+          "total_hours": 30,
+          "department_id": 1,
+          "department_name": "Matemática",
+          "professorListCount": 3
+        },
+        {
+          "id": 2,
+          "name": "Física I",
+          "code": "FIS101",
+          "mandatory": false,
+          "total_hours": 25,
+          "department_id": 2,
+          "department_name": "Fisica",
+          "professorListCount": 5
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/subjects/{subject_id}",
+      "title": "Obtener información de una materia",
+      "description": "Devuelve la información detallada de una materia específica, incluyendo datos de profesores, comisiones, distribución semanal y carreras.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de cualquier materia dentro del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de cualquier materia dentro de su departamento.\n-En caso de ser un DOCENTE, obtiene solo la información de las materias a las que pertenece. En caso de no tener los permisos de lectura necesarios, solo podra ver información mínima (id y nombre de la materia).",
+      "folder": "subjects",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Materia encontrada"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Materia no encontrada"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor y la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Álgebra I",
+        "code": "MAT101",
+        "mandatory": true,
+        "undergraduate": false,
+        "area": "Introducción a la Ingeniería",
+        "work_plan": "La materia se dictara en clases presenciales",
+        "weekly_hours": 8,
+        "total_hours": 40,
+        "studentsAmount": 34,
+        "department_id": 1,
+        "department_name": "Matemática",
+        "commissionData": {
+          "id": 1,
+          "instrument_id": null,
+          "subject_id": 1,
+          "theory_commissions": 2,
+          "practice_commissions": 2,
+          "theory_practice_commissions": 2
+        },
+        "professorsAmount": {
+          "id": 1,
+          "instrument_id": null,
+          "subject_id": 1,
+          "professors": 3,
+          "teaching_assistants": 2
+        },
+        "weeklyDistribution": {
+          "id": 1,
+          "instrument_id": null,
+          "subject_id": 1,
+          "theory_hours": 2,
+          "practice_hours": 2,
+          "theory_practice_hours": 2
+        },
+        "careersData": [
+          {
+            "career": "Licenciatura en Matemática",
+            "year": 1
+          },
+          {
+            "career": "Licenciatura en Fisica",
+            "year": 1
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/subjects/",
+      "title": "Crear una nueva materia",
+      "description": "Permite crear una nueva materia en el sistema.",
+      "folder": "subjects",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": true,
+          "description": "Nombre de la materia"
+        },
+        {
+          "field": "code",
+          "type": "string",
+          "required": true,
+          "description": "Código de la materia"
+        },
+        {
+          "field": "department_id",
+          "type": "integer",
+          "required": true,
+          "description": "Id del departamento al que pertenece"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Materia creada exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "422",
+          "description": "Error relacionado a referencia exclusiva a materia o instrumento A"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor y la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 3,
+        "name": "Cálculo I",
+        "code": "MAT102",
+        "department_id": 3
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/subjects/{subject_id}",
+      "title": "Actualizar información de una materia",
+      "description": "Permite modificar a un docente con los permisos necesarios la información de una materia existente.",
+      "folder": "subjects",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre de la materia"
+        },
+        {
+          "field": "code",
+          "type": "string",
+          "required": false,
+          "description": "Código de la materia"
+        },
+        {
+          "field": "mandatory",
+          "type": "boolean",
+          "required": false,
+          "description": "Es la materia obligatoria de cursar"
+        },
+        {
+          "field": "undergraduate",
+          "type": "boolean",
+          "required": false,
+          "description": "Es la materia de grado o posgrado"
+        },
+        {
+          "field": "area",
+          "type": "string",
+          "required": false,
+          "description": "Area de estudio a la que pertenece la materia"
+        },
+        {
+          "field": "work_plan",
+          "type": "string",
+          "required": false,
+          "description": "Plan de estudios de la materia"
+        },
+        {
+          "field": "weekly_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Horas semanales de cursada"
+        },
+        {
+          "field": "total_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Horas totales de la cursada"
+        },
+        {
+          "field": "studentsAmount",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de alumnos que cursan la materia"
+        },
+        {
+          "field": "commissionData",
+          "type": "object",
+          "required": false,
+          "description": "Cantidad de comisiones de la catedra"
+        },
+        {
+          "field": "commissionData.theory_commissions",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de comisiones de teoría"
+        },
+        {
+          "field": "commissionData.practice_commissions",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de comisiones de práctica"
+        },
+        {
+          "field": "commissionData.theory_practice_commissions",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de comisiones de teoría-práctica"
+        },
+        {
+          "field": "weeklyDistribution",
+          "type": "object",
+          "required": false,
+          "description": "Cantidad de horas semanales de la catedra"
+        },
+        {
+          "field": "weeklyDistribution.theory_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de horas semanales de teoría"
+        },
+        {
+          "field": "weeklyDistribution.practice_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de horas semanales de práctica"
+        },
+        {
+          "field": "weeklyDistribution.theory_practice_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de horas semanales de teoría-práctica"
+        },
+        {
+          "field": "professorsAmount",
+          "type": "object",
+          "required": false,
+          "description": "Cantidad de profesores y ayudantes "
+        },
+        {
+          "field": "professorsAmount.professors",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de profesores"
+        },
+        {
+          "field": "professorsAmount.teaching_assistants",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de ayudantes"
+        },
+        {
+          "field": "careersData",
+          "type": "array",
+          "required": false,
+          "description": "Conjunto de carreras donde se da la materia junto a su año respectivo"
+        },
+        {
+          "field": "careersData[].career",
+          "type": "string",
+          "required": false,
+          "description": "Nombre de la carrera"
+        },
+        {
+          "field": "careersData[].year",
+          "type": "int",
+          "required": false,
+          "description": "Año de la carrera"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Asignatura actualizada correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Materia no encontrada"
+        },
+        {
+          "code": "422",
+          "description": "Error relacionado a referencia exclusiva a materia o instrumento A"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Asignatura actualizada correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/subjects/{subject_id}",
+      "title": "Eliminar una materia",
+      "description": "Elimina una materia del sistema.",
+      "folder": "subjects",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Asignatura eliminada correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Materia no encontrada"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Asignatura eliminada correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/departaments/",
+      "title": "Listar todos los departamentos",
+      "description": "Obtiene la lista completa de departamentos del sistema.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de todos los departamentos dentro del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de su departamento.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Departamento de Matemática",
+          "director_id": 1,
+          "director_name": "Juan Pérez",
+          "subjects": [
+            {
+              "id": 1,
+              "name": "Matemática 2",
+              "code": "MAT102",
+              "mandatory": true,
+              "total_hours": 45,
+              "professorsListCount": 4
+            },
+            {
+              "id": 2,
+              "name": "Matemática 3",
+              "code": "MAT103",
+              "mandatory": false,
+              "total_hours": 45,
+              "professorsListCount": 2
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Departamento de Física",
+          "director_id": 2,
+          "director_name": "Francisco Pérez",
+          "subjects": []
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/departaments/{department_id}",
+      "title": "Obtener información de un departamento",
+      "description": "Devuelve la información detallada de un departamento específico.\nDependiendo el rol que lo solicita, varía la respuesta:\n-En caso de ser un ADMINISTRADOR, obtiene la información de cualquier departamento dentro del sistema.\n-En caso de ser un DIRECTOR, obtiene la información de su departamento.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Departamento encontrado"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Departamento de Matemática",
+        "director_id": 1,
+        "director_name": "Juan Pérez",
+        "subjects": [
+          {
+            "id": 1,
+            "name": "Matemática 2",
+            "code": "MAT102",
+            "mandatory": true,
+            "total_hours": 45,
+            "professorsListCount": 4
+          },
+          {
+            "id": 2,
+            "name": "Matemática 3",
+            "code": "MAT103",
+            "mandatory": false,
+            "total_hours": 45,
+            "professorsListCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/departaments/",
+      "title": "Crear un nuevo departamento",
+      "description": "Permite crear un nuevo departamento en el sistema.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": true,
+          "description": "Nombre del departamento"
+        },
+        {
+          "field": "director_id",
+          "type": "integer",
+          "required": false,
+          "description": "ID del usuario que se convertira en director del departamento"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Departamento creado exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario o rol no encontrado"
+        },
+        {
+          "code": "409",
+          "description": "Usuario ya cuenta con el rol de director"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Departamento de Química"
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/departaments/{departmentId}",
+      "title": "Actualizar información de un departamento",
+      "description": "Permite modificar la información de un departamento existente.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre del departamento"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Departamento actualizado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Departamento actualizado correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/departaments/{departmentId}",
+      "title": "Eliminar un departamento",
+      "description": "Elimina un departamento del sistema.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Departamento eliminado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento no encontrado"
+        }
+      ],
+      "responseSample": {
+        "message": "Departamento eliminado correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/departaments/{departmentId}/positions/",
+      "title": "Listar cargos de un departamento",
+      "description": "Un director obtiene todos los cargos disponibles de su departamento.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Cargos obtenidas exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Cargos no encontrados para el departamento"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Profesor Titular",
+          "maximum_hours_limit": 6,
+          "minimum_hours_limit": 3,
+          "credits": 10,
+          "department_id": 1,
+          "permissions": 128,
+          "professors": [
+            {
+              "id": 1,
+              "name": "Juan Manuel",
+              "surname": "Gomez"
+            },
+            {
+              "id": 2,
+              "name": "Juan Cruz",
+              "surname": "García"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Jefe de Trabajos Prácticos",
+          "maximum_hours_limit": 5,
+          "minimum_hours_limit": 2.5,
+          "credits": 8,
+          "department_id": 1,
+          "permissions": 96,
+          "professors": [
+            {
+              "id": 3,
+              "name": "Carlos",
+              "surname": "Gomez"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/departaments/{departmentId}/positions/{positionId}",
+      "title": "Obtener información de un cargo",
+      "description": "Un director obtiene la información detallada de un cargo específico dentro de su departamento.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Cargo encontrado"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Cargos no encontrados para el departamento"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Profesor Titular",
+        "maximum_hours_limit": 6,
+        "minimum_hours_limit": 3,
+        "credits": 10,
+        "department_id": 1,
+        "permissions": 128,
+        "professors": [
+          {
+            "id": 1,
+            "name": "Juan Manuel",
+            "surname": "Gomez"
+          },
+          {
+            "id": 2,
+            "name": "Juan Cruz",
+            "surname": "García"
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/departaments/{departmentId}/positions/",
+      "title": "Crear un nuevo cargo en un departamento",
+      "description": "Permite crear al director un nuevo cargo dentro de su departamento",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": true,
+          "description": "Nombre del cargo"
+        },
+        {
+          "field": "maximum_hours_limit",
+          "type": "integer",
+          "required": true,
+          "description": "Maximas horas semanales que el cargo puede ejercer en la materia"
+        },
+        {
+          "field": "minimum_hours_limit",
+          "type": "integer",
+          "required": true,
+          "description": "Minimo de horas semanales que el cargo puede ejercer en la materia"
+        },
+        {
+          "field": "credits",
+          "type": "float",
+          "required": true,
+          "description": "Cantidad de creditos que ocupa la posición"
+        },
+        {
+          "field": "permissions",
+          "type": "integer",
+          "required": true,
+          "description": "Permisos del cargo dentro del sistema"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Posición creada exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 3,
+        "name": "Ayudante de catedra",
+        "maximum_hours_limit": 8,
+        "minimum_hours_limit": 4,
+        "credits": 12,
+        "departmentId": 1,
+        "permissions": 2
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/departaments/{departmentId}/positions/{position_id}",
+      "title": "Actualizar un cargo",
+      "description": "Permite al director modificar la información de un cargo existente en su departamento.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre del cargo"
+        },
+        {
+          "field": "maximum_hours_limit",
+          "type": "float",
+          "required": false,
+          "description": "Maximas horas semanales que el cargo puede ejercer en la materia"
+        },
+        {
+          "field": "minimum_hours_limit",
+          "type": "float",
+          "required": false,
+          "description": "Minimo de horas semanales que el cargo puede ejercer en la materia"
+        },
+        {
+          "field": "permissions",
+          "type": "integer",
+          "required": false,
+          "description": "Permisos del cargo dentro del sistema"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Posición del departamento actualizada correctamente"
+        },
+        {
+          "code": "400",
+          "description": "No se pueden actualizar los creditos de esta posición"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Posición no encontrada"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Posición del departamento actualizada correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/departaments/{department_id}/positions/{position_id}",
+      "title": "Eliminar un cargo",
+      "description": "Permite al director eliminar un cargo específico de su departamento.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Posición del departamento eliminada correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Posición no encontrada"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Posición del departamento eliminada correctamente"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/departaments/{departmentId}/professors/{professor_id}",
+      "title": "Asignar profesor a un departamento",
+      "description": "Permite asignar un profesor a un departamento específico.",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Profesor asignado al departamento correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Docente ya pertenece al departamento"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Profesor asignado al departamento correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/departaments/{departmentId}/professors/{professor_id}",
+      "title": "Remover profesor de un departamento",
+      "description": "Elimina la asignación de un profesor a un departamento específico",
+      "folder": "departments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Profesor removido del departamento correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Docente no pertenece a departamento o sigue perteneciendo a una materia del mismo"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Profesor removido del departamento correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/academics_secretaries/",
+      "title": "Listar todas las secretarías académicas",
+      "description": "Obtiene la lista completa de usuarios con rol de secretaría académica en el sistema.",
+      "folder": "academic_secretaries",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Laura",
+          "surname": "Martinez",
+          "email": "laura.martinez@example.com"
+        },
+        {
+          "id": 2,
+          "name": "Carlos",
+          "surname": "Rodríguez",
+          "email": "carlos.rodriguez@example.com"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/academics_secretaries/{user_id}",
+      "title": "Obtener información de una secretaría académica",
+      "description": "Devuelve la información de un usuario con rol de secretaría académica específico.",
+      "folder": "academic_secretaries",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Secretaría académica encontrada"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Laura",
+        "surname": "Martinez",
+        "email": "laura.martinez@example.com"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/observators/",
+      "title": "Listar todos los observadores",
+      "description": "Obtiene la lista completa de usuarios con rol de observador en el sistema.",
+      "folder": "observers",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Laura",
+          "surname": "Martinez",
+          "email": "laura.martinez@example.com"
+        },
+        {
+          "id": 2,
+          "name": "Carlos",
+          "surname": "Rodríguez",
+          "email": "carlos.rodriguez@example.com"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/observators/{user_id}",
+      "title": "Obtener información de un observador",
+      "description": "Devuelve la información de un usuario con rol de observador específico.",
+      "folder": "observers",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Observador encontrado"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Usuario no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Laura",
+        "surname": "Martinez",
+        "email": "laura.martinez@example.com"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/department_directors/departments/{directorId}",
+      "title": "Obtener departamento de un director",
+      "description": "Devuelve el departamento correspondiente a un usuario con el rol director",
+      "folder": "department_directors",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Departamentos obtenidos exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Departamento no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos."
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Departamento de Física"
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/subjects/{subjectId}/instruments/",
+      "title": "Actualizar instrumento en fase de creación",
+      "description": "Actualiza un instrumento que está en fase de creación para una materia. No es necesario el instrumentID porque solo puede haber 1 en fase de creación por materia.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "status",
+          "type": "string",
+          "required": false,
+          "description": "Toma el valor 'accept' para pasar el instrumento a fase de revisión por director"
+        },
+        {
+          "field": "permissions",
+          "type": "integer",
+          "required": false,
+          "description": "Permisos de docentes y observadores para visualizar y comentar el instrumento"
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre de la materia"
+        },
+        {
+          "field": "code",
+          "type": "string",
+          "required": false,
+          "description": "Código de la materia"
+        },
+        {
+          "field": "mandatory",
+          "type": "boolean",
+          "required": false,
+          "description": "Es la materia obligatoria de cursar"
+        },
+        {
+          "field": "undergraduate",
+          "type": "boolean",
+          "required": false,
+          "description": "Es la materia de grado o posgrado"
+        },
+        {
+          "field": "area",
+          "type": "string",
+          "required": false,
+          "description": "Area de estudio a la que pertenece la materia"
+        },
+        {
+          "field": "work_plan",
+          "type": "string",
+          "required": false,
+          "description": "Plan de estudios de la materia"
+        },
+        {
+          "field": "weekly_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Horas semanales de cursada"
+        },
+        {
+          "field": "total_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Horas totales de la cursada"
+        },
+        {
+          "field": "studentsAmount",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de alumnos que cursan la materia"
+        },
+        {
+          "field": "commissionData",
+          "type": "object",
+          "required": false,
+          "description": "Cantidad de comisiones de la catedra"
+        },
+        {
+          "field": "commissionData.theory_commissions",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de comisiones de teoría"
+        },
+        {
+          "field": "commissionData.practice_commissions",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de comisiones de práctica"
+        },
+        {
+          "field": "commissionData.theory_practice_commissions",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de comisiones de teoría-práctica"
+        },
+        {
+          "field": "weeklyDistribution",
+          "type": "object",
+          "required": false,
+          "description": "Cantidad de horas semanales de la catedra"
+        },
+        {
+          "field": "weeklyDistribution.theory_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de horas semanales de teoría"
+        },
+        {
+          "field": "weeklyDistribution.practice_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de horas semanales de práctica"
+        },
+        {
+          "field": "weeklyDistribution.theory_practice_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de horas semanales de teoría-práctica"
+        },
+        {
+          "field": "professorsAmount",
+          "type": "object",
+          "required": false,
+          "description": "Cantidad de profesores y ayudantes "
+        },
+        {
+          "field": "professorsAmount.professors",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de profesores"
+        },
+        {
+          "field": "professorsAmount.teaching_assistants",
+          "type": "integer",
+          "required": false,
+          "description": "Cantidad de ayudantes"
+        },
+        {
+          "field": "careersData",
+          "type": "array",
+          "required": false,
+          "description": "Conjunto de carreras donde se da la materia junto a su año respectivo"
+        },
+        {
+          "field": "careersData[].career",
+          "type": "string",
+          "required": false,
+          "description": "Nombre de la carrera"
+        },
+        {
+          "field": "careersData[].year",
+          "type": "int",
+          "required": false,
+          "description": "Año de la carrera"
+        },
+        {
+          "field": "professorsTeam",
+          "type": "array",
+          "required": false,
+          "description": "Equipo docente de la materia"
+        },
+        {
+          "field": "professorsTeam[].professor_name",
+          "type": "string",
+          "required": false,
+          "description": "Nombre del docente"
+        },
+        {
+          "field": "professorsTeam[].professor_title",
+          "type": "string",
+          "required": false,
+          "description": "Titulo del docente"
+        },
+        {
+          "field": "professorsTeam[].professor_position",
+          "type": "string",
+          "required": false,
+          "description": "Cargo del docente en la materia"
+        },
+        {
+          "field": "professorsTeam[].dedication",
+          "type": "string",
+          "required": false,
+          "description": "Dedicación del docente a la materia"
+        },
+        {
+          "field": "professorsTeam[].character",
+          "type": "string",
+          "required": false,
+          "description": "Caracter de designación del docente en la materia"
+        },
+        {
+          "field": "professorsTeam[].teaching_hours_to_students",
+          "type": "integer",
+          "required": false,
+          "description": "Horas semanales de docencia frente a alumnos"
+        },
+        {
+          "field": "professorsTeam[].total_teaching_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Horas promedio semanales de docencia"
+        },
+        {
+          "field": "professorsTeam[].investigation_hours",
+          "type": "integer",
+          "required": false,
+          "description": "Horas promedio semanales de investigación"
+        },
+        {
+          "field": "professorsTeam[].extension_hours",
+          "type": "string",
+          "required": false,
+          "description": "Horas promedio semanales de extensión"
+        },
+        {
+          "field": "professorsTeam[].management_hours",
+          "type": "string",
+          "required": false,
+          "description": "Horas promedio semanales de gestión"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Instrumento actualizado correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Estado invalido"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A no encontrado"
+        },
+        {
+          "code": "422",
+          "description": "Error relacionado a referencia exclusiva a materia o instrumento A"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Instrumento actualizado correctamente"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/subjects/{subjectId}/instruments/{instrument_id}/extra_field",
+      "title": "Agregar campo extra a un instrumento",
+      "description": "Permite agregar un campo personalizado adicional a un instrumento específico a un docente con los permisos necesarios.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "field_name",
+          "type": "string",
+          "required": true,
+          "description": "Nombre del campo extra"
+        },
+        {
+          "field": "field_value",
+          "type": "string",
+          "required": false,
+          "description": "Contenido del campo extra"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Campo extra creado correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Trabajos de laboratorio",
+        "data": "Se realizaran 3 trabajos relacionados a distintos experimentos químicos"
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/subjects/{subjectId}/instruments/{instrument_id}/extra_field/{fieldId}",
+      "title": "Actualizar campo extra de un instrumento",
+      "description": "Permite modificar un campo personalizado existente de un instrumento a un docente con los permisos necesarios.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "data",
+          "type": "string",
+          "required": true,
+          "description": "Contenido del campo extra"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Campo extra actualizado correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A o campo extra no encontrados"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "name": "Trabajos de laboratorio",
+        "data": "Se realizaran 3 trabajos relacionados a distintos experimentos químicos"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/subjects/{subjectId}/instruments/{instrument_id}/extra_field/{fieldId}",
+      "title": "Eliminar campo extra de un instrumento",
+      "description": "Permite eliminar un campo personalizado de un instrumento específico a un docente con los permisos necesarios.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Campo extra eliminado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A o campo extra no encontrados"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Campo extra eliminado correctamente"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/subjects/{subjectId}/instruments/",
+      "title": "Crear un nuevo instrumento para una materia",
+      "description": "Crea un nuevo instrumento académico asociado a una materia específica a partir de 4 formatos a elegir:\n- A partir del ultimo instrumento A completado de la materia\n- A partir de un instrumento A pasado de la materia específico\n- A partir de la información de la materia\n- A partir de 0, sin referencia de otro instrumento, solo con la información básica de la materia.\n",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "format: \"last\"",
+          "type": "string",
+          "required": true,
+          "description": "Formato de autcompletado en base al ultimo instrumento A  completado de la materia"
+        },
+        {
+          "field": "format: \"subject\"",
+          "type": "string",
+          "required": true,
+          "description": "Formato de autocompletado en base a la información de la materia"
+        },
+        {
+          "field": "format: {instrument_id}",
+          "type": "integer",
+          "required": true,
+          "description": "Formato de autocompletado en base a un instrumento A antiguo específico de la materia"
+        },
+        {
+          "field": "format: \"\"",
+          "type": "string",
+          "required": true,
+          "description": "Formato que no autocompleta el instrumento A, fuera de cierta información básica de la materia"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Instrumento creado exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Formato invalido o instrumento ya existente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Materia o instrumento A no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "version": "1.0",
+        "state": 0,
+        "subject_id": 1,
+        "name": "Fisica 1",
+        "mandatory": true,
+        "undergraduate": true,
+        "area": "Area de Física",
+        "work_plan": "El plan de trabajo de la materia sera el siguiente...",
+        "weekly_hours": 6,
+        "total_hours": 36,
+        "students_ammount": 50,
+        "department_id": 1,
+        "department_name": "Departamento de Física",
+        "permissions": 2,
+        "created_at": "2025/10/13 21:34:04",
+        "extraFields": [
+          {
+            "id": 1,
+            "name": "DIRECTOR - Carlos Gomez",
+            "data": "El campo de plan de trabajo no me convence"
+          }
+        ],
+        "professorsTeam": [
+          {
+            "id": 1,
+            "instrument_id": 1,
+            "professor_name": "Juan Perez",
+            "professor_title": "Ingeniero en Informática",
+            "professor_position": "Profesor Titular",
+            "dedication": "Exclusive",
+            "character": "Regular",
+            "teaching_hours_to_students": 3,
+            "total_teaching_hours": 6,
+            "investigation_hours": 2,
+            "extension_hours": 2,
+            "management_hours": 2
+          }
+        ],
+        "professorsAmount": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "professors": 1,
+          "teaching_assistants": 0
+        },
+        "commissionData": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "theory_commissions": 1,
+          "practice_commissions": 1,
+          "theory_practice_commissions": 0
+        },
+        "weeklyDistribution": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "theory_hours": 2,
+          "practice_hours": 2,
+          "theory_practice_hours": 0
+        },
+        "careersData": [
+          {
+            "id": 1,
+            "instrument_id": 1,
+            "subject_id": null,
+            "career": "Ingeniería Química",
+            "year": 1
+          },
+          {
+            "id": 2,
+            "instrument_id": 1,
+            "subject_id": null,
+            "career": "Ingeniería Industrial",
+            "year": 1
+          }
+        ]
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/subjects/{subjectId}/instruments",
+      "title": "Eliminar instrumento de una materia",
+      "description": "Permite eliminar un instrumento específico a un docente con los permisos necesarios.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Instrumento eliminado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Instrumento eliminado correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/instruments",
+      "title": "Listar instrumentos con filtros",
+      "description": "Obtiene la lista de instrumentos con filtros opcionales por estado pendiente o período actual. Dependiendo el rol, te devuelve:\n- En caso de ser director, todos los instrumentos A asociados al departamento.\n- En caso de ser profesor, todos los instrumentos A para los que tenga permisos ya sea de visualización y/o edición.\n- En caso de ser observador, todos los instrumentos A en etapas no finalizadas.\n- En caso de ser secretaría académica, todos los instrumentos A en fase de revisión final o los finalizados dentro del periodo \n  post-mortem del instrumento.",
+      "folder": "instruments",
+      "queryParams": [
+        {
+          "field": "pending",
+          "type": "boolean",
+          "required": false,
+          "description": "Filtrar por instrumentos pendientes. Por default es falso."
+        },
+        {
+          "field": "actualPeriod",
+          "type": "boolean",
+          "required": false,
+          "description": "Filtrar por período actual. Por default es verdadero."
+        }
+      ],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error en el servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "state": 1,
+          "subject_id": 5,
+          "department_id": 2,
+          "department_name": "Departamento de Informática",
+          "name": "Álgebra I",
+          "code": "ALG101",
+          "version": "1.0",
+          "permissions": 3,
+          "createdAt": "2025/10/13 21:34:04"
+        },
+        {
+          "id": 2,
+          "state": 0,
+          "subject_id": 1,
+          "department_id": 2,
+          "department_name": "Departamento de Informática",
+          "name": "Química I",
+          "code": "QUIM101",
+          "version": "1.1",
+          "permissions": 0,
+          "createdAt": "2025/10/13 21:34:04"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/instruments/subjects/all/{subjectId}",
+      "title": "Obtener todos los instrumentos de una materia",
+      "description": "Devuelve todos los instrumentos históricos y actuales asociados a una materia específica. Dependiendo el rol, te devuelve:\n- En caso de ser director, el historial de instrumentos A de cualquier materia del departamento.\n- En caso de ser docente, el historial de instrumentos A de cualquier materia a la que perteneza y cuente con los permisos necesarios.\n",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Instrumentos obtenidos exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "state": 1,
+          "subject_id": 5,
+          "department_id": 2,
+          "department_name": "Departamento de Informática",
+          "name": "Álgebra I",
+          "code": "ALG101",
+          "version": "1.0",
+          "permissions": 3,
+          "createdAt": "2025/10/13 21:34:04"
+        },
+        {
+          "id": 2,
+          "state": 0,
+          "subject_id": 1,
+          "department_id": 2,
+          "department_name": "Departamento de Informática",
+          "name": "Química I",
+          "code": "QUIM101",
+          "version": "1.1",
+          "permissions": 0,
+          "createdAt": "2025/10/13 21:34:04"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/instruments/{instrumentoAid}",
+      "title": "Obtener información detallada de un instrumento",
+      "description": "Devuelve toda la información de un instrumento específico, incluyendo datos de la materia, profesores, comisiones, distribución semanal, carreras y equipo de profesores. Dependiendo el rol, te devuelve:\n- En caso de ser director, cualquier instrumento A asociado al departamento.\n- En caso de ser profesor, cualquier instrumento A para el que tenga permisos ya sea de visualización y/o edición.\n- En caso de ser observador, cualquier instrumento A en etapa no finalizada.\n- En caso de ser secretaría académica, cualquier instrumento A en fase de revisión final o los finalizado dentro del periodo \n  post-mortem del instrumento.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Instrumento encontrado"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "version": "1.0",
+        "state": 0,
+        "subject_id": 1,
+        "name": "Fisica 1",
+        "mandatory": true,
+        "undergraduate": true,
+        "area": "Area de Física",
+        "work_plan": "El plan de trabajo de la materia sera el siguiente...",
+        "weekly_hours": 6,
+        "total_hours": 36,
+        "students_ammount": 50,
+        "department_id": 1,
+        "department_name": "Departamento de Física",
+        "permissions": 2,
+        "created_at": "2025/10/13 21:34:04",
+        "extraFields": [
+          {
+            "id": 1,
+            "name": "DIRECTOR - Carlos Gomez",
+            "data": "El campo de plan de trabajo no me convence"
+          }
+        ],
+        "professorsTeam": [
+          {
+            "id": 1,
+            "instrument_id": 1,
+            "professor_name": "Juan Perez",
+            "professor_title": "Ingeniero en Informática",
+            "professor_position": "Profesor Titular",
+            "dedication": "Exclusive",
+            "character": "Regular",
+            "teaching_hours_to_students": 3,
+            "total_teaching_hours": 6,
+            "investigation_hours": 2,
+            "extension_hours": 2,
+            "management_hours": 2
+          }
+        ],
+        "professorsAmount": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "professors": 1,
+          "teaching_assistants": 0
+        },
+        "commissionData": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "theory_commissions": 1,
+          "practice_commissions": 1,
+          "theory_practice_commissions": 0
+        },
+        "weeklyDistribution": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "theory_hours": 2,
+          "practice_hours": 2,
+          "theory_practice_hours": 0
+        },
+        "careersData": [
+          {
+            "id": 1,
+            "instrument_id": 1,
+            "subject_id": null,
+            "career": "Ingeniería Química",
+            "year": 1
+          },
+          {
+            "id": 2,
+            "instrument_id": 1,
+            "subject_id": null,
+            "career": "Ingeniería Industrial",
+            "year": 1
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/instruments/subjects/{subjectId}",
+      "title": "Obtener instrumento actual de una materia",
+      "description": "Devuelve toda la información del instrumento A actual, incluyendo datos de la materia, profesores, comisiones, distribución semanal, carreras y equipo de profesores. Dependiendo el rol, te devuelve:\n- En caso de ser director, cualquier instrumento A asociado al departamento.\n- En caso de ser profesor, cualquier instrumento A para el que tenga permisos ya sea de visualización y/o edición.\n- En caso de ser observador, cualquier instrumento A en etapa no finalizada.\n- En caso de ser secretaría académica, cualquier instrumento A en fase de revisión final o los finalizado dentro del periodo \n  post-mortem del instrumento.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Instrumento encontrado"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "version": "1.0",
+        "state": 0,
+        "subject_id": 1,
+        "name": "Fisica 1",
+        "mandatory": true,
+        "undergraduate": true,
+        "area": "Area de Física",
+        "work_plan": "El plan de trabajo de la materia sera el siguiente...",
+        "weekly_hours": 6,
+        "total_hours": 36,
+        "students_ammount": 50,
+        "department_id": 1,
+        "department_name": "Departamento de Física",
+        "permissions": 2,
+        "created_at": "2025/10/13 21:34:04",
+        "extraFields": [
+          {
+            "id": 1,
+            "name": "DIRECTOR - Carlos Gomez",
+            "data": "El campo de plan de trabajo no me convence"
+          }
+        ],
+        "professorsTeam": [
+          {
+            "id": 1,
+            "instrument_id": 1,
+            "professor_name": "Juan Perez",
+            "professor_title": "Ingeniero en Informática",
+            "professor_position": "Profesor Titular",
+            "dedication": "Exclusive",
+            "character": "Regular",
+            "teaching_hours_to_students": 3,
+            "total_teaching_hours": 6,
+            "investigation_hours": 2,
+            "extension_hours": 2,
+            "management_hours": 2
+          }
+        ],
+        "professorsAmount": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "professors": 1,
+          "teaching_assistants": 0
+        },
+        "commissionData": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "theory_commissions": 1,
+          "practice_commissions": 1,
+          "theory_practice_commissions": 0
+        },
+        "weeklyDistribution": {
+          "id": 1,
+          "instrument_id": 1,
+          "subject_id": null,
+          "theory_hours": 2,
+          "practice_hours": 2,
+          "theory_practice_hours": 0
+        },
+        "careersData": [
+          {
+            "id": 1,
+            "instrument_id": 1,
+            "subject_id": null,
+            "career": "Ingeniería Química",
+            "year": 1
+          },
+          {
+            "id": 2,
+            "instrument_id": 1,
+            "subject_id": null,
+            "career": "Ingeniería Industrial",
+            "year": 1
+          }
+        ]
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/instruments/{instrumentoAid}",
+      "title": "Actualizar estado de un instrumento",
+      "description": "Permite modificar el estado de un instrumento A. Dependiendo del rol:\n- Siendo director, puede rechazarlo (devolviendolo a fase de creación) o aceptarlo (pasandolo a fase de revisión final)\n- Siendo secretaría académica, puede rechazarlo (devolviendolo a la fase de revisión por director) o aceptarlo (Aprobandolo y dandolo por finalizado)",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "status",
+          "type": "string",
+          "required": true,
+          "description": "Puede tomar los valores \"accept/reject\""
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Estado de instrumento actualizado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la bae de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Estado de instrumento actualizado correctamente"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/instruments/{instrumentoAid}/comments/{commentaryId}",
+      "title": "Eliminar comentario de un instrumento",
+      "description": "Permite un profesor con los permisos necesarios eliminar un comentario específico asociado a un instrumento.",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "204",
+          "description": "Comentario eliminado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A o comentario no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error en la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Comentario eliminado correctamente"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/instruments/{instrumentoAid}/comments/",
+      "title": "Agregar comentario a un instrumento",
+      "description": "Permite agregar un nuevo comentario o observación a un instrumento académico. Dependiendo el rol, te devuelve:\n- En caso de ser director, cualquier instrumento A asociado al departamento.\n- En caso de ser profesor, cualquier instrumento A para el que tenga permisos de creación de comentarios.\n- En caso de ser observador, cualquier instrumento A en etapa no finalizada en el que tenga permisos de creación de comentarios.\n- En caso de ser secretaría académica, cualquier instrumento A en fase de revisión final.\n",
+      "folder": "instruments",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "name",
+          "type": "string",
+          "required": true,
+          "description": "Nombre de la persona que realiza el comentario"
+        },
+        {
+          "field": "comment",
+          "type": "string",
+          "required": true,
+          "description": "Contenido del comentario"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Comentario agregado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "404",
+          "description": "Instrumento A no encontrado"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 10,
+        "instrument_id": 1,
+        "author": "DIRECTOR - Carlos Gomez",
+        "content": "Falta información en la sección de plan de trabajo",
+        "created_at": "2025/10/13 19:59:11"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations",
+      "title": "Listar todas las conversaciones",
+      "description": "Obtiene la lista de todas las conversaciones del usuario autenticado.",
+      "folder": "conversations",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Lista obtenida exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "senderId": 1,
+          "senderName": "Mauricio Gomez",
+          "receiverId": 3,
+          "receiverName": "Carlos Gonzalez",
+          "hasNewMessages": true,
+          "lastMessage": {
+            "id": 1,
+            "conversationId": 1,
+            "senderId": 3,
+            "senderName": "Carlos Gonzanlez",
+            "message": "Tenemos que hablar",
+            "createdAt": "2025/10/13 19:59:11"
+          }
+        },
+        {
+          "id": 2,
+          "senderId": 1,
+          "senderName": "Mauricio Gomez",
+          "receiverId": 5,
+          "receiverName": "Sandro Rojo",
+          "hasNewMessages": false,
+          "lastMessage": {
+            "id": 2,
+            "conversationId": 2,
+            "senderId": 1,
+            "senderName": "Mauricio Gomez",
+            "message": "Todo bien?",
+            "createdAt": "2025/10/13 19:59:11"
+          }
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations/messages/{conversationId}",
+      "title": "Obtener mensajes de una conversación",
+      "description": "Devuelve todos los mensajes de una conversación específica.",
+      "folder": "conversations",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Mensajes obtenidos exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "senderId": 1,
+        "senderName": "Mauricio Gomez",
+        "receiverId": 3,
+        "receiverName": "Carlos Gonzalez",
+        "hasNewMessages": true,
+        "messages": [
+          {
+            "id": 1,
+            "conversationId": 1,
+            "senderId": 3,
+            "senderName": "Carlos Gonzanlez",
+            "message": "Tenemos que hablar",
+            "createdAt": "2025/10/13 19:59:11"
+          },
+          {
+            "id": 2,
+            "conversationId": 1,
+            "senderId": 3,
+            "senderName": "Carlos Gonzanlez",
+            "message": "No estas trabjando ultimamente",
+            "createdAt": "2025/10/13 19:59:15"
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/conversations/messages/{conversationId}",
+      "title": "Enviar mensaje en una conversación existente",
+      "description": "Permite enviar un nuevo mensaje dentro de una conversación específica. Este endpoint puede ser utilizado por todos los roles a excepción de observador.",
+      "folder": "conversations",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "message",
+          "type": "string",
+          "required": true,
+          "description": "Contenido del mensaje"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Mensaje enviado exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Contenido inválido"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 3,
+        "conversationId": 1,
+        "senderId": 5,
+        "senderName": "Juan Pérez",
+        "message": "Sí, ya lo revisé. Todo está correcto.",
+        "createdAt": "2025/10/13 21:24:29"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/conversations/messages/",
+      "title": "Iniciar nueva conversación",
+      "description": "Crea una nueva conversación y envía el primer mensaje. Este endpoint puede ser utilizado por todos los roles a excepción de observador.",
+      "folder": "conversations",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "receiverId",
+          "type": "array",
+          "required": true,
+          "description": "Id del receptor del mensaje"
+        },
+        {
+          "field": "message",
+          "type": "string",
+          "required": true,
+          "description": "Contenido del primer mensaje"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Conversación creada exitosamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "id": 1,
+        "senderId": 1,
+        "senderName": "Mauricio Gomez",
+        "receiverId": 3,
+        "receiverName": "Carlos Gonzalez",
+        "hasNewMessages": true,
+        "messages": [
+          {
+            "id": 1,
+            "conversationId": 1,
+            "senderId": 3,
+            "senderName": "Carlos Gonzanlez",
+            "message": "Tenemos que hablar",
+            "createdAt": "2025/10/13 19:59:11"
+          }
+        ]
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/conversations/messages/{messageId}",
+      "title": "Actualizar estado del mensaje",
+      "description": "Permite marcar un mensaje como leído/no leído",
+      "folder": "conversations",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Estado del mensaje actualizado correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {}
+    },
+    {
+      "method": "GET",
+      "path": "/api/configuration",
+      "title": "Obtener configuración del sistema",
+      "description": "Devuelve la configuración actual del sistema.",
+      "folder": "configuration",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Configuración obtenida correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "open_creation_date": "2025-09-29 00:00:00.0 UTC (+00:00)",
+        "close_creation_date": "2025-10-29 00:00:00.0 UTC (+00:00)",
+        "post_mortem_instrument_time": "7 00:00:00",
+        "created_at": "2025-09-29 00:00:00.0 UTC (+00:00)",
+        "updated_at": "2025-09-29 00:00:00.0 UTC (+00:00)"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/configuration",
+      "title": "Actualizar configuración",
+      "description": "Permite actualizar la configuración del sistema.",
+      "folder": "configuration",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "open_creation_date",
+          "type": "string",
+          "required": false,
+          "description": "Fecha de apertura de creación de instrumento A"
+        },
+        {
+          "field": "close_creation_date",
+          "type": "string",
+          "required": false,
+          "description": "Fecha de cierre de creación de instrumento A"
+        },
+        {
+          "field": "post_mortem_instrument_time",
+          "type": "integer",
+          "required": false,
+          "description": "Tiempo en el que se puede recuperar el instrumento para modificaciones una vez aprobado"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Configuración actualizada correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Datos inválidos"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "open_creation_date": "2025-09-29 00:00:00.0 UTC (+00:00)",
+        "close_creation_date": "2025-10-29 00:00:00.0 UTC (+00:00)",
+        "post_mortem_instrument_time": "7 00:00:00",
+        "created_at": "2025-09-29 00:00:00.0 UTC (+00:00)",
+        "updated_at": "2025-09-29 00:00:00.0 UTC (+00:00)"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification",
+      "title": "Listar notificaciones del usuario",
+      "description": "Obtiene todas las notificaciones del usuario autenticado",
+      "folder": "notifications",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Notificaciones obtenidas exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": [
+        {
+          "id": 1,
+          "userId": 5,
+          "message": "Tu plan de cátedra ha sido aprobado por el departamento",
+          "confirmed": false,
+          "TTL": "5 00:00:00",
+          "createdAt": "2024-10-08T14:00:00Z"
+        },
+        {
+          "id": 2,
+          "userId": 6,
+          "message": "Tu plan de cátedra ha sido aprobado por el departamento",
+          "confirmed": true,
+          "TTL": "5 00:00:00",
+          "createdAt": "2024-10-08T14:00:00Z"
+        }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/notification/{notificationId}",
+      "title": "Confirmación de lectura de notificación",
+      "description": "Permite marcar una notificación como leída.",
+      "folder": "notifications",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Notificación confirmada correctamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Notificación confirmada correctamente"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/statistics",
+      "title": "Obtener estadísticas del sistema",
+      "description": "Devuelve estadísticas generales del sistema, incluyendo instrumentos creados, instrumentos en sus distintas etapas, usuarios activos, departamentos, y profesores.",
+      "folder": "statistics",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [
+        {
+          "code": "200",
+          "description": "Estadísticas obtenidas exitosamente"
+        },
+        {
+          "code": "401",
+          "description": "Error relacionado al token"
+        },
+        {
+          "code": "403",
+          "description": "Error relacionado a los permisos"
+        },
+        {
+          "code": "500",
+          "description": "Error del servidor o la base de datos"
+        }
+      ],
+      "responseSample": {
+        "totalUsers": 30,
+        "usersPerRole": {
+          "academicSecretaries": 5,
+          "DepartmentDirectors": 2,
+          "professors": 18,
+          "observators": 5
+        },
+        "totalDepartments": 10,
+        "professorsPerDepartment": [
+          {
+            "department_name": "Departamento de Informática",
+            "professors": 9
+          },
+          {
+            "department_name": "Departamento de Física",
+            "professors": 9
+          }
+        ],
+        "approvedInstruments": 5,
+        "pendingInstrumentsByAcademicSecretaries": 5,
+        "pendingInstrumentsByDepartmentDirectors": 5,
+        "createdInstruments": 5,
+        "totalInstruments": 20
+      }
+    },
+    {
+      "method": "WS",
+      "path": "",
+      "title": "Registrar sesión de usuario en WebSocket",
+      "description": "El cliente se conecta al servidor WebSocket y registra una sesión de usuario con su ID y roles. Esto permite al servidor enviar notificaciones y mensajes en tiempo real al usuario.",
+      "folder": "websocket",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "userId",
+          "type": "integer",
+          "required": true,
+          "description": "ID del usuario que se registra"
+        },
+        {
+          "field": "roles",
+          "type": "array",
+          "required": true,
+          "description": "Array de strings con los roles del usuario"
+        }
+      ],
+      "statusCodes": [],
+      "responseSample": {}
+    },
+    {
+      "method": "WS",
+      "path": "",
+      "title": "Envíar notificación desde WebSocket",
+      "description": "El servidor WebSocket envía notificaciones al cliente cuando hay eventos relevantes. ",
+      "folder": "websocket",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "topic",
+          "type": "string",
+          "required": true,
+          "description": "Tema del mensaje del socket"
+        },
+        {
+          "field": "message",
+          "type": "string",
+          "required": true,
+          "description": "Mensaje de la notificación"
+        },
+        {
+          "field": "dto",
+          "type": "string",
+          "required": false,
+          "description": "Objeto que lleva todos los elementos vitales de la notificación"
+        }
+      ],
+      "statusCodes": [],
+      "responseSample": {}
+    },
+    {
+      "method": "WS",
+      "path": "",
+      "title": "Enviar mensaje via WebSocket",
+      "description": "El cliente puede enviar mensajes en tiempo real a través del WebSocket para comunicación instantánea.",
+      "folder": "websocket",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "topic",
+          "type": "string",
+          "required": true,
+          "description": "Tema del mensaje del socket"
+        },
+        {
+          "field": "message",
+          "type": "integer",
+          "required": true,
+          "description": "Mensaje de la notificación"
+        },
+        {
+          "field": "dto",
+          "type": "string",
+          "required": false,
+          "description": "Objeto que lleva todos los elementos vitales de la notificación"
+        }
+      ],
+      "statusCodes": [],
+      "responseSample": {}
+    },
+    {
+      "method": "POST",
+      "path": "/api/forgot-password/{token}",
+      "title": "Cambio de contraseña por recuperación",
+      "description": "Se envía nueva contraseña al back, junto a un token especial para el reinicio de la misma.",
+      "queryParams": [],
+      "body": [
+        {
+          "field": "new_password",
+          "type": "string",
+          "required": true,
+          "description": "Nueva contraseña"
+        },
+        {
+          "field": "repeated_password",
+          "type": "string",
+          "required": true,
+          "description": "Nueva contraseña repetida"
+        }
+      ],
+      "statusCodes": [
+        {
+          "code": "201",
+          "description": "Contraseña cambiada correctamente"
+        },
+        {
+          "code": "400",
+          "description": "Contraseñas no coinciden o el token es invalida o se encuentra vencido"
+        },
+        {
+          "code": "404",
+          "description": "Mail ligado al token no existe"
+        },
+        {
+          "code": "500",
+          "description": "Error relacionado a la base de datos"
+        }
+      ],
+      "responseSample": {
+        "message": "Contraseña reseteada correctamente"
+      },
+      "folder": "auth"
+    }
+  ]
+}
