@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>API Docs — Editor</title>
+  <title>API Docs — Documentación</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,8 +12,8 @@
       <div class="brand">
         <div class="logo">API</div>
         <div>
-          <div class="title">API Docs — Editor</div>
-          <div class="subtitle">Dark template — editar desde navegador</div>
+          <div class="title">API Docs — Documentación</div>
+          <div class="subtitle">Documentación de endpoints</div>
         </div>
       </div>
 
@@ -21,29 +21,22 @@
         <input id="q" placeholder="Buscar endpoint o path..." />
       </div>
 
-      <div style="display:flex;gap:8px">
-        <button id="newBtn" class="btn small">+ Nuevo endpoint</button>
-        <button id="exportBtn" class="copy small">Exportar</button>
-        <button id="importBtn" class="copy small">Importar</button>
-      </div>
-
       <div class="endpoints" id="list" style="margin-top:6px;flex:1"></div>
 
       <div style="margin-top:auto;font-size:13px;color:var(--muted)">
-        <div>Export file name: <strong>api-docs.json</strong></div>
-        <div style="margin-top:8px">Endpoints: <strong id="count">0</strong></div>
+        <div>Total de endpoints: <strong id="count">0</strong></div>
       </div>
     </aside>
 
     <main class="main">
       <div class="header">
-        <h1 id="mainTitle">Editor de endpoints</h1>
-        <div class="muted">Todo se guarda/exporta como JSON. (UI-only — no se realizan llamadas)</div>
+        <h1 id="mainTitle">Documentación de endpoints</h1>
+        <div class="muted">Modo de solo lectura</div>
       </div>
 
       <div class="content">
         <section class="doc-card" id="viewer" style="min-width:0;">
-          <div id="emptyMessage">Seleccioná o creá un endpoint para ver/editar su documentación.</div>
+          <div id="emptyMessage">Seleccioná un endpoint para ver su documentación.</div>
           <div id="formArea" style="display:none"></div>
           <div id="previewArea" style="display:none"></div>
         </section>

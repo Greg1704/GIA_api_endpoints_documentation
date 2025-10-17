@@ -82,6 +82,15 @@ code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, monospace}
 .controls{display:flex;flex-direction:column;gap:10px;padding:16px;background:rgba(15,23,42,0.2);border-radius:10px;border:1px solid var(--border);margin-top:12px}
 input, textarea, select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card-light);color:var(--text);transition:all 0.2s;font-size:13px}
 input:focus, textarea:focus, select:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px rgba(6,182,212,0.1)}
+input:read-only, textarea:read-only, select:disabled{
+  background:#334155;
+  cursor:default;
+  opacity:0.9;
+}
+textarea.auto-resize{
+  overflow-y:hidden;
+  line-height:1.5;
+}
 .btn{padding:10px 16px;border-radius:10px;border:0;background:var(--accent);color:#0f172a;font-weight:700;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 8px rgba(6,182,212,0.3)}
 .btn:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 6px 16px rgba(6,182,212,0.4)}
 .btn:active{transform:translateY(0);box-shadow:0 2px 8px rgba(6,182,212,0.3)}
