@@ -2422,7 +2422,7 @@
       "method": "PATCH",
       "path": "/api/subjects/{subjectId}/instruments/",
       "title": "Actualizar instrumento en fase de creación",
-      "description": "Actualiza un instrumento que está en fase de creación para una materia. No es necesario el instrumentID porque solo puede haber 1 en fase de creación por materia.",
+      "description": "Actualiza un instrumento que está en fase de creación para una materia. No es necesario el instrumentID porque solo puede haber 1 en fase de creación por materia.\nExisten 3 alternativas a lo que se puede mandar en el body:\n- Un nuevo valor de permissions para reemplazar al antiguo.\n- Un el parametro status, para pasar el instrumento de fase.\n- El resto de parametros listados en body params, para editar el contenido del instrumento.\n\nDe intentar envíar más de una opción junta, solo se llevara a cabo la que se revise en primera instancia en el código.",
       "folder": "instruments",
       "queryParams": [],
       "body": [
