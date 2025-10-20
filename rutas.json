@@ -4042,6 +4042,26 @@
         "message": "Contraseña reseteada correctamente"
       },
       "folder": "auth"
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations/who",
+      "title": "Listar usuarios con los que puede iniciarse una conversación",
+      "description": "Obtiene la lista de usuarios con las que puede iniciar una conversación el usuario, el listado va a ser diferente dependiendo el rol y/o departamento del mismo.",
+      "queryParams": [],
+      "body": [],
+      "statusCodes": [],
+      "responseSample": [
+        {
+          "id": 1,
+          "name": "Carlos Gomez"
+        },
+        {
+          "id": 2,
+          "name": "Juan García"
+        }
+      ],
+      "folder": "conversations"
     }
   ]
 }
