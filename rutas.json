@@ -3918,7 +3918,7 @@
     },
     {
       "method": "WS",
-      "path": "",
+      "path": "/register",
       "title": "Registrar sesión de usuario en WebSocket",
       "description": "El cliente se conecta al servidor WebSocket y registra una sesión de usuario con su ID y roles. Esto permite al servidor enviar notificaciones y mensajes en tiempo real al usuario.",
       "folder": "websocket",
@@ -3942,7 +3942,7 @@
     },
     {
       "method": "WS",
-      "path": "",
+      "path": "/event",
       "title": "Envíar notificación desde WebSocket",
       "description": "El servidor WebSocket envía notificaciones al cliente cuando hay eventos relevantes. ",
       "folder": "websocket",
@@ -3972,7 +3972,7 @@
     },
     {
       "method": "WS",
-      "path": "",
+      "path": "/event",
       "title": "Enviar mensaje via WebSocket",
       "description": "El cliente puede enviar mensajes en tiempo real a través del WebSocket para comunicación instantánea.",
       "folder": "websocket",
